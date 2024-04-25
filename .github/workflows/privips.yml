@@ -33,7 +33,7 @@ jobs:
         run: |
           pwd
           whoami
-          ls -l .
+          ls -l /__w/privIP_test
           git log -5 --oneline | cat
           echo "FILES_CHANGED=$(git diff --name-only ${GH_PR_BASE_REF} ${GH_PR_HEAD_REF} | grep -w net | xargs)" >> $GITHUB_ENV
         shell: bash
