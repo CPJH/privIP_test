@@ -19,14 +19,14 @@ jobs:
       image: ubuntu:22.04
 
     steps:
+      - name: Install needed packages
+        run: |
+          apt update && apt install -y git python3  python3-yaml      
+
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-
-      - name: Install needed packages
-        run: |
-          apt update && apt install -y git python3  python3-yaml
+          fetch-depth: 2
 
       - name: set files changed env variable
         if: env.GH_PR_HEAD_REF
