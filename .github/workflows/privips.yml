@@ -15,8 +15,8 @@ env:
 jobs:
   check-for-privateIPs:
     runs-on: ubuntu-latest
-    container:
-      image: ubuntu:22.04
+   #container:
+      #image: ubuntu:22.04
 
     steps:
       - name: Checkout code
