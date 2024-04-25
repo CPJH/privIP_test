@@ -15,8 +15,8 @@ env:
 jobs:
   check-for-privateIPs:
     runs-on: ubuntu-latest
-   #container:
-      #image: ubuntu:22.04
+    container:
+      image: ubuntu:22.04
 
     steps:
       - name: Checkout code
@@ -26,7 +26,8 @@ jobs:
 
       - name: Install needed packages
         run: |
-          sudo apt update && sudo apt -y install git python3 python3-yaml
+          apt update && apt install -y git python3  python3-yaml
+
       - name: set files changed env variable
         if: env.GH_PR_HEAD_REF
         run: echo "FILES_CHANGED=$(git diff --name-only ${GH_PR_BASE_REF} ${GH_PR_HEAD_REF} | grep -w net | xargs)" >> $GITHUB_ENV
@@ -37,9 +38,10 @@ jobs:
         run: |
           for file in $FILES_CHANGED; do
             git show ${GH_PR_BASE_REF}:$file > $file.master || touch $file.master    #### ensures an empty *.master file is created for any new file in pr
-            git show ${GH_PR_HEAD_REF}:$file > $file.pr || touch $file.master        #### ensures an empty *.pr file is created for any deleted file in pr
+            git show ${GH_PR_HEAD_REF}:$file > $file.pr || touch $file.pr        #### ensures an empty *.pr file is created for any deleted file in pr
             git diff ${GH_PR_BASE_REF} ${GH_PR_HEAD_REF} --unified=0 -- $file > $file.gitdiff
           done
+
       - name: Run check script
         run: |
           ${GITHUB_WORKSPACE}/.github/privips.py $FILES_CHANGED
